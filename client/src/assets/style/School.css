@@ -38,3 +38,14 @@ p {
     margin-right: auto;
     width: 70vh;
 }
+
+.main_info {
+  display: flex;
+  flex-direction: row;
+  margin: 1vh;
+}
+
+.a_school_image {
+  margin-right: auto;
+  margin-left: auto;
+}

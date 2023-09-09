@@ -1,6 +1,6 @@
 <template>
     <div>
-
+        <img src="@/assets/map.png" alt="" class="inmg">
     </div>
 </template>
 
@@ -17,3 +17,9 @@
         }
     }
 </script>
+
+<style scoped>
+    .inmg {
+        width: 100%;
+    }
+</style>

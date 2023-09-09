@@ -1,13 +1,15 @@
 <template>
     <div v-if="data" class="main">
-        <img src="@/assets/school.png" alt="" class="school_image">
+        <a href="/" class="a_school_image">
+            <img src="@/assets/school.png" alt="" class="school_image">
+        </a>
         <p class="title">{{data.institution_name}}</p>
 
         <div class="main_info">
             <SchoolInfoPlate :data="data" v-if="data"/>
-            <Map :data="mapData" v-if="mapData"/>
         </div>
 
+        <p class="title">Зображення по запиту "{{data.short_name}}"</p>
         <Galery v-if="images" :data="images"/>
         
     </div>
