@@ -1,9 +1,6 @@
 # Edu Rank - Ukrainian School Ranking System
 
 ![Edu Rank Logo](./client/public/logo.png)
-<div style="text-align:center;">
-  <img src="./client/public/logo.png" alt="Image Description" style="border-radius: 50%; width: 200px; height: 200px;">
-</div>
 
 Edu Rank is a comprehensive school ranking system designed to evaluate and rank Ukrainian schools based on various criteria. This project aims to provide valuable information to parents, students, educators, and policymakers to make informed decisions about schools in Ukraine.
 
@@ -26,9 +23,8 @@ Edu Rank is a comprehensive school ranking system designed to evaluate and rank 
 
 ### Prerequisites
 - [Python](https://www.python.org/) (version X.X or higher)
-- [Django](https://www.djangoproject.com/) (version X.X or higher)
-- [Database System (e.g., PostgreSQL, MySQL)](link_to_database)
-- [Dependencies, libraries, or packages]
+- [Node.js](https://nodejs.org) (version X.X or higher)
 
 ### Installation
-1. Clone the repository:
+1. Clone the repository
+2. Run start.bat
