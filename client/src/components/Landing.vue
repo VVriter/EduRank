@@ -2,6 +2,7 @@
     <div class="content">
       <img src="@/assets/logo.png" alt="" class="logo">
       <p class="search_logo">Знайди свою школу та залиш відгук!</p>
+      
       <div class="search-container">
         <input
           type="text"
@@ -10,69 +11,96 @@
           @input="updateSearchResults"
           placeholder="Пошук школи"
         >
-        <span class="search-icon">&#128269;</span>
+        <span class="search-icon" @click="updateSearchResults">&#128269;</span>
       </div>
 
-        <!-- Анімація для знайдених шкіл -->
-        <transition-group name="school-fade" tag="div">
-            <SchoolPlate v-for="school in schools" :data="school"/>
-        </transition-group>
-  
-      <div class="nothing_found" v-if="notFound">
-        <img src="@/assets/robot.gif" alt="">
-        <p>Наші роботи нічого не знайшли :()</p>
-      </div>
-  
-      <div v-if="inputText == ''" class="recommended">
-        <!-- Add recommended content here -->
-      </div>
+      <transition-group name="school-fade" tag="div">
+          <SchoolPlate v-for="school in schools" :data="school"/>
+      </transition-group>
 
-      <footer>
-        <p>Цей додаток був розроблений Романом Новохатьком. Телеграм: @dazed68</p>
-      </footer>
+      <transition-group name="school-fade" tag="div">
+        <NotFound v-if="notFound"/>
+      </transition-group>
+
+      <transition-group name="school-fade" tag="div">
+        <LoadingSchoolPlate v-if="isTimeouted" v-for="i in itterators"/>
+      </transition-group>
     </div>
-  </template>
+</template>
   
-  <script>
+<script>
     import SchoolPlate from '@/components/sub/SchoolPlate.vue'
+    import LoadingSchoolPlate from '@/components/sub/LoadingSchoolPlate.vue'
+    import NotFound from './sub/NotFound.vue'
 
     export default {
         name: 'Landing',
         components: {
-            SchoolPlate
+            SchoolPlate,
+            LoadingSchoolPlate,
+            NotFound
         },
         data() {
           return {
               inputText: null,
               schools: [],
-              notFound: false
+              notFound: false,
+              isTimeouted: null,
+              itterators: [1,2,3,4,5,6]
           }
+        },
+        mounted() {
+          this.updateSearchResults()
         },
         methods: {
           updateSearchResults() {
-              this.notFound = false;
-              this.schools = [];
+            if (this.inputText == '' || this.inputText == null) {
+              this.inputText = null
+              this.schools = []
+              this.notFound = false
+              return
+            }
+
+            this.notFound = false;
+            this.schools = [];
+            this.isTimeouted = true
+
+            // Устанавливаем таймаут в 1 секунду
+            const searchTimeout = setTimeout(() => {
+              // Выполняем поисковый запрос только после завершения таймаута
               fetch(`http://127.0.0.1:5000/api/search?query=${this.inputText}`, { method: 'GET' })
-              .then(response => response.json())
-              .then(data => {
+                .then(response => response.json())
+                .then(data => {
                   this.schools = data;
+                  this.isTimeouted = false 
                   if (this.schools.length < 1) {
-                  this.notFound = true;
+                    this.notFound = true;
                   }
-              })
-              .catch(error => {
+                })
+                .catch(error => {
                   console.error('Error fetching data:', error);
-              });
+                });
+            }, 500); 
+
+            if (this.searchTimeout) {
+              clearTimeout(this.searchTimeout);
+            }
+
+            this.searchTimeout = searchTimeout;
           }
         }
+
     }
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
+
   .content {
     display: flex;
     flex-direction: column;
     align-items: center; /* Center all content horizontally */
+    position: relative;
+    padding-bottom: 4rem;
   }
   
   .logo {
@@ -134,36 +162,27 @@
     font-size: 3vh;
     margin: 1rem auto; /* Center horizontally and add some top margin */
   }
-  
-  /* Add styles for recommended content if needed */
-  .recommended {
-    /* Your recommended content styles here */
-  }
 
-    /* Додайте стилі для анімації переходу */
     .school-fade-enter-active, .school-fade-leave-active {
-        transition: opacity 0.1s;
+        transition: opacity 0.3s;
     }
     .school-fade-enter, .school-fade-leave-to {
         opacity: 0;
     }
 
+    @media only screen and (max-width: 1000px) {
+        .logo {
+          width: 20vh;
+        }
 
-    footer {
-        position: relative;
-        bottom: 0;
-        width: 100%; /* Зробіть футер на весь ширину вікна */
-        padding: 1rem; /* Додайте внутрішні відступи за потреби */
-        text-align: center;
+        .search_bar {
+          width: 70%;
+          height: 3vh;
+          border-radius: 1vh;
+          padding: 1vh 2vh; /* Add some padding for better appearance */
+          font-size: 2vh; /* Adjust font size */
+          border: 2px solid #ccc; /* Add a border */
+        }
     }
-
-    footer p {
-        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-        font-weight: 900;
-        font-size: 2vh;
-        margin: 0; /* Видаліть зовнішні відступи, щоб футер був відцентрованим */
-        color: black; /* Приклад кольору тексту */
-    }
-
-  </style>
+</style>
   

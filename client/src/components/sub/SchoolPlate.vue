@@ -4,9 +4,11 @@
       <img src="@/assets/school.png" alt="" class="img_title">
       <div class="school_content">
         <p class="school_title">{{ data.institution_name }}</p>
-        <p class="info_box">📍 Адреса: {{ data.address }}</p>
-        <p class="info_box">📞 Телефон: {{ data.phone }}</p>
-        <p class="info_box">🌐 Сайт: {{ data.website }}</p>
+        <div class="info_boxes">
+          <p class="info_box">📍 Адреса: {{ data.address }}</p>
+          <p class="info_box">📞 Телефон: {{ data.phone }}</p>
+          <p class="info_box" v-if="data.website">🌐 Сайт: {{ data.website }}</p>
+        </div>
       </div>
     </div>
   </a>
@@ -65,6 +67,28 @@
 
   a {
     text-decoration: none;
+  }
+
+
+  @media only screen and (max-width: 1000px) {
+    .school {
+      width: 80%;
+      height: auto;
+      flex-direction: column;
+      align-items: center; /* Center vertically */
+    }
+
+    .school_title {
+      text-align: center;
+    }
+
+    .info_boxes {
+      margin-top: 1vh;
+      margin-bottom: 1vh;
+      margin-left: auto;
+      margin-right: auto;
+      width: fit-content;
+    }
   }
   </style>
   

@@ -1,38 +1,13 @@
 <template>
-    <div v-if="data" class="main">
-        <a href="/" class="a_school_image">
-            <img src="@/assets/school.png" alt="" class="school_image">
-        </a>
-        <p class="title">{{data.institution_name}}</p>
-
-        <div class="main_info">
-            <SchoolInfoPlate :data="data" v-if="data"/>
-        </div>
-
-        <p class="title">Зображення по запиту "{{data.short_name}}"</p>
-        <Galery v-if="images" :data="images"/>
+    <div>
         
     </div>
-
-    <Loading v-if="!data && !notFound"/>
-    <NotFound v-if="notFound"/>
 </template>
 
 <script>
-    import Loading from './sub/Loading.vue';
-    import NotFound from './sub/NotFound.vue';
-    import Galery from './sub/Galery.vue';
-    import Map from './sub/Map.vue';
-    import SchoolInfoPlate from './sub/SchoolInfoPlate.vue';
-
-
     export default {
         components: {
-            Loading,
-            NotFound,
-            Galery,
-            Map,
-            SchoolInfoPlate
+            
         },
         data() {
             return {
