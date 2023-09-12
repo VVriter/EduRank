@@ -1,19 +1,15 @@
 from database_parser import DatabaseParser
 from search_engine import fetch_images_by_prompt, get_google_map_cords_by_prompt
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 from flask_cors import CORS
+from flask_session import Session
+from sms import send_verification_code
 
 app = Flask(__name__)
 CORS(app=app)
+Session(app=app)
 
 databaseParser = None
-
-@app.route('/api/schools')
-def school():
-    global databaseParser
-    if databaseParser is None:
-        return jsonify({'error': 'Database is not loaded'})
-    return jsonify(databaseParser.get_json_response())
 
 @app.route('/api/search')
 def search():
@@ -37,6 +33,10 @@ def edbo():
         if school['institution_id'] == query:
             school_responce = school
 
+    if school_responce == None:
+        return jsonify({
+            'error': 'School not found'
+        }), 404
     return jsonify(school_responce)
 
 @app.route('/api/images')
@@ -48,6 +48,22 @@ def images():
 def map():
     query = request.args.get('query')
     return jsonify(get_google_map_cords_by_prompt(prompt=query))
+
+@app.route('/api/chart')
+def chart():
+    query = request.args.get('query')
+    return jsonify([1, 2, 3, 5, 4, 2, 5])
+
+
+
+
+
+@app.route('/api/register')
+def register():
+    username = request.args.get('username')
+    phone = request.args.get('phone')
+    
+    return jsonify({})
 
 if __name__ == "__main__":
     print('Starting application')

@@ -1,13 +1,25 @@
 <template>
-    <div>
+    <div class="content" v-if="data">
+        <img src="@/assets/logo.png" alt="" class="logo" @click="replace">
+        <p class="school-title">{{ data.institution_name }}</p>
+        <SchoolInfoPlate :data="data"/>
+        <ReplaceButtons :data="data"/>
         
     </div>
+
+    <SchoolLoadingPlate v-if="!data"/>
 </template>
 
 <script>
+    import SchoolInfoPlate from './school/SchoolInfoPlate.vue'
+    import SchoolLoadingPlate from './landing/SchoolLoadingPlate.vue'
+    import ReplaceButtons from './school/ReplaceButtons.vue'
+
     export default {
         components: {
-            
+            SchoolInfoPlate,
+            SchoolLoadingPlate,
+            ReplaceButtons
         },
         data() {
             return {
@@ -15,34 +27,84 @@
                 data: null,
                 notFound: false,
                 images: null,
-                mapData: null
+                mapData: null,
             }
         },  
+        methods: {
+            replace() {
+                location.replace('/')
+            }
+        },
         created() {
             this.id = this.$route.params.id
 
-            fetch(`http://127.0.0.1:5000/api/edbo?query=${this.id}`, { method: 'GET' })
-                .then(response => response.json())
+            fetch(`/api/edbo?query=${this.id}`, { method: 'GET' })
+                .then(response => {
+                    if (response.status != 200) 
+                        throw new Error('And error ocured, responce code is not 200')
+                    return response.json()
+                })
                 .then(data => this.data = data)
-                .catch(error => console.error('Error fetching data:', error))
+                .catch(error => {
+                    console.error('Error fetching data:', error)
+                    this.notFound = true
+                    location.replace('/404/Школа не знайдена 🙃')
+                    return
+                })
 
             .then(() => {
-                fetch(`http://127.0.0.1:5000/api/images?query=${this.data.short_name}`)
+                fetch(`/api/images?query=${this.data.short_name}`)
                 .then(res => res.json())
                 .then(data => this.images = data)
                 .catch(error => console.error('Error fetching data:', error))
             })
 
             .then(() => {
-                fetch(`http://127.0.0.1:5000/api/map?query=Україна ${this.data.region_name} ${this.data.koatuu_name} ${this.data.address}`)
+                fetch(`/api/map?query=Україна ${this.data.region_name} ${this.data.koatuu_name} ${this.data.address}`)
                 .then(res => res.json())
                 .then(data => this.mapData = data)
                 .catch(error => console.error('Error fetching data:', error))
             })
+
         }
     }
 </script>
 
 <style>
-  @import '@/assets/style/School.css';
+    p {
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        font-weight: 900;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logo {
+        border-radius: 50%;
+        margin-top: 5vh;
+        width: 40vh;
+    }
+
+    .school-title {
+        font-size: 3vh;
+        text-align: center;
+        margin-right: 3vh;
+        margin-left: 3vh;
+        width: 50%;
+    }
+
+
+    @media only screen and (max-width: 1000px) {
+        .school-title {
+            font-size: 3vh;
+            text-align: center;
+            margin-right: 3vh;
+            margin-left: 3vh;
+            width: 90%;
+        }
+    }
+
 </style>
