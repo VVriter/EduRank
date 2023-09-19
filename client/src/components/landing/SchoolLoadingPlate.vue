@@ -16,9 +16,9 @@
   </template>
   
   <script>
-  export default {
-    name: 'SchoolLoadingPlate'
-  };
+    export default {
+      name: 'SchoolLoadingPlate'
+    }
   </script>
   
   <style scoped>

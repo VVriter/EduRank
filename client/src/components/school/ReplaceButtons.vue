@@ -4,7 +4,7 @@
             <div class="button-icon">
                 <p>🌐</p>
             </div>
-            <p class="button-label">Сайи</p>
+            <p class="button-label">Сайт</p>
         </a>
         <a :href="'tel:' + data.phone" v-if="data.phone" class="button-link">
             <div class="button-icon">

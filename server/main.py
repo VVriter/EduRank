@@ -3,10 +3,12 @@ from search_engine import fetch_images_by_prompt, get_google_map_cords_by_prompt
 from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 from flask_session import Session
-from sms import send_verification_code
+from sms import send_verification_code, is_phone_valid
 
 app = Flask(__name__)
 CORS(app=app)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
 Session(app=app)
 
 databaseParser = None
@@ -57,13 +59,6 @@ def chart():
 
 
 
-
-@app.route('/api/register')
-def register():
-    username = request.args.get('username')
-    phone = request.args.get('phone')
-    
-    return jsonify({})
 
 if __name__ == "__main__":
     print('Starting application')

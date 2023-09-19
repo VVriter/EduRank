@@ -138,9 +138,9 @@
         opacity: 0;
     }
 
-    @media only screen and (max-width: 1000px) {
+    @media only screen and (max-width: 700px) {
         .logo {
-          width: 20vh;
+          width: 30vh;
         }
 
         .search_bar {
@@ -150,6 +150,10 @@
           padding: 1vh 2vh; 
           font-size: 2vh;
           border: 2px solid #ccc;
+        }
+
+        .search_logo {
+          width: 70%;
         }
     }
 </style>
