@@ -3,7 +3,6 @@ from search_engine import fetch_images_by_prompt, get_google_map_cords_by_prompt
 from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 from flask_session import Session
-from sms import send_verification_code, is_phone_valid
 
 app = Flask(__name__)
 CORS(app=app)
