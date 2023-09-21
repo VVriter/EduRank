@@ -1,5 +1,6 @@
 import requests
 from python_json_config import ConfigBuilder
+import facebook
 
 builder = ConfigBuilder()
 config = builder.parse_config('configuration.json')
@@ -16,11 +17,9 @@ def fetch_images_by_prompt(prompt):
         if response.status_code == 200:
             return response.json()
         else:
-            # Handle API errors gracefully
             error_message = f"API request failed with status code {response.status_code}: {response.text}"
             return {"error": error_message}
     except Exception as e:
-        # Handle other exceptions (e.g., network errors)
         return {"error": f"An error occurred: {str(e)}"}
     
 def get_google_map_cords_by_prompt(prompt):
@@ -28,3 +27,26 @@ def get_google_map_cords_by_prompt(prompt):
     url = f"http://dev.virtualearth.net/REST/v1/Locations?query={prompt}&key={api_key}"
     response = requests.get(url)
     return response.json()
+
+class FacebookApiProcessor():
+
+    def __init__(self):
+        self.__app_id = config.fb_id
+        self.__app_secret = config.fb_secret
+        self.__app_access_token = config.fb_access_token
+        self.__graph = facebook.GraphAPI(access_token=self.get_app_access_token, version='3.1')
+        
+    def get_app_id(self):
+        return self.__app_id
+    
+    def get_app_secret(self):
+        return self.__app_secret
+    
+    def get_app_access_token(self):
+        return self.__app_access_token
+    
+    def get_graph(self):
+        return self.__graph
+
+    def search(self, prompt):
+        return ""

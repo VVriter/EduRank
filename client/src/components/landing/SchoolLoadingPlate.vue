@@ -112,13 +112,13 @@
     }
   
     50% {
-      transform: translateX(400px);
+      transform: translateX(230px);
       background-color: #f33879a2;
       width: 100px;
     }
   
     75% {
-      transform: translateX(200px);
+      transform: translateX(250);
       background-color: #b55bf59f;
       width: 150px;
     }

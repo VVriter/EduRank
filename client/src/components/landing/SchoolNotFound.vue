@@ -110,35 +110,35 @@ a {
 
 @keyframes slide {
     0% {
-        transform: translateX(0px);
-        background-color: rgba(0, 0, 255, 0.712);
-        width: 100px;
+      transform: translateX(0px);
+      background-color: rgba(0, 0, 255, 0.712);
+      width: 100px;
     }
-
+  
     25% {
-        transform: translateX(200px);
-        background-color: #b55bf5b2;
-        width: 150px;
+      transform: translateX(200px);
+      background-color: #b55bf5b2;
+      width: 150px;
     }
-
+  
     50% {
-        transform: translateX(400px);
-        background-color: #f33879a2;
-        width: 100px;
+      transform: translateX(230px);
+      background-color: #f33879a2;
+      width: 100px;
     }
-
+  
     75% {
-        transform: translateX(200px);
-        background-color: #b55bf59f;
-        width: 150px;
+      transform: translateX(250);
+      background-color: #b55bf59f;
+      width: 150px;
     }
-
+  
     100% {
-        transform: translateX(0px);
-        background-color: rgba(0, 0, 255, 0.658);
-        width: 100px;
+      transform: translateX(0px);
+      background-color: rgba(0, 0, 255, 0.658);
+      width: 100px;
     }
-}
+  }
 
 
 

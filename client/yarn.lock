@@ -331,12 +331,27 @@ vue-chartjs@^5.2.0:
   resolved "https://registry.yarnpkg.com/vue-chartjs/-/vue-chartjs-5.2.0.tgz#3d0076ccf8016d1bf8fab5ccd837e7fb81005ded"
   integrity sha512-d3zpKmGZr2OWHQ1xmxBcAn5ShTG917+/UCLaSpaCDDqT0U7DBsvFzTs69ZnHCgKoXT55GZDW8YEj9Av+dlONLA==
 
+vue-google-oauth2@^1.5.10:
+  version "1.5.10"
+  resolved "https://registry.yarnpkg.com/vue-google-oauth2/-/vue-google-oauth2-1.5.10.tgz#e8798c2481a5e2862a8e195184539685c968b5d6"
+  integrity sha512-0+ZGbauhkBhvTln2RPyeaSvRdrka194h+MeEQngy1H4UvGOC5hxRMB8QvUrVRP/w2Tt8/ByCqGDko6MuHpFpbQ==
+
 vue-router@^4.2.4:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.2.4.tgz#382467a7e2923e6a85f015d081e1508052c191b9"
   integrity sha512-9PISkmaCO02OzPVOMq2w82ilty6+xJmQrarYZDkjZBfl4RvYAlt4PKnEX21oW4KTtWfa9OuO/b3qk1Od3AEdCQ==
   dependencies:
     "@vue/devtools-api" "^6.5.0"
+
+vue-telegram-login@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/vue-telegram-login/-/vue-telegram-login-2.1.0.tgz#a3b80acb88ab031ef46503975c1415fcc5d26c5f"
+  integrity sha512-d8ZdNQpWk9SDtGjMSjXv9yHJZePVtclPbacyBdyJjBLqhStEkfjivpyNz+1w/EJt5AozdZvYNgkHLOJo00zaTA==
+
+vue3-google-login@^2.0.23:
+  version "2.0.23"
+  resolved "https://registry.yarnpkg.com/vue3-google-login/-/vue3-google-login-2.0.23.tgz#072864807f54bd883acfd3976329bdcdd7ca3f0b"
+  integrity sha512-kYn8UFJOGw+cv1lQqj4mYaDMCDmLDKxEVjFdoiS+en4BQhf0cqpaYTUxbdcHPxqATnZmuJmHsebuBbR93ktVpA==
 
 vue@^3.3.4:
   version "3.3.4"

@@ -3,15 +3,10 @@ import requests
 import json
 import sys
 
-class DatabaseParser():
+class EdboApiFetcher():
 
-    url = None
-    database_name = None
-    json_response = None
-
-    def __init__(self, url, database_name):
+    def __init__(self, url):
         self.url = url
-        self.database_name = database_name
         response = requests.get(url)
         response.encoding = 'utf-8'  # Set the encoding to UTF-8
         if response.status_code == 200:
@@ -24,12 +19,6 @@ class DatabaseParser():
 
     def get_url(self):
         return self.url
-    
-    def get_database_name(self):
-        return self.database_name
-    
-    def execute_query(self, query, values):
-        pass
 
     def get_json_response(self):
         return self.json_response

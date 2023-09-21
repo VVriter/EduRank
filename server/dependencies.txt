@@ -2,3 +2,4 @@ flask
 flask-cors
 python_json_config
 Flask-Session
+facebook-sdk

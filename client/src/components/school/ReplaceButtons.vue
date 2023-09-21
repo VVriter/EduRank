@@ -60,7 +60,7 @@
     .button-icon {
         font-size: 3.5vh;
         border-radius: 1vh;
-        background: linear-gradient(to right, #0466c263, #6b5b95);
+        background: linear-gradient(90deg, #3f51b5, transparent) #2196f3;
         color: white;
         width: 6vh;
         height: 6vh;
@@ -68,7 +68,12 @@
         align-items: center;
         justify-content: center;
         margin: 0 auto 0.5vh;
-        transition: background-color 0.2s;
+        transition: background-color 1s;
+    }
+
+    .button-icon:hover, .button-icon:focus {
+        background-color: #e91e63;
+        color: #fff;
     }
 
     .button-icon p {

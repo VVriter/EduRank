@@ -2,5 +2,7 @@
     "schools_list_api_url": "https://registry.edbo.gov.ua/api/schools/?lc=&ut=3&exp=json",
     "search_engine_api_key": "",
     "search_engine_cx": "",
-    "google_map_engine_key": ""
+    "google_map_engine_key": "",
+    "fb_secret": "",
+    "fb_id": ""
 }
