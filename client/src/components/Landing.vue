@@ -25,6 +25,7 @@
       <transition-group name="school-fade" tag="div">
         <LoadingSchoolPlate v-if="isTimeouted" v-for="i in itterators" :key="i"/>
       </transition-group>
+
     </div>
 </template>
   
@@ -32,13 +33,15 @@
     import SchoolPlate from '@/components/landing/SchoolPlate.vue'
     import LoadingSchoolPlate from '@/components/landing/SchoolLoadingPlate.vue'
     import NotFound from './landing/SchoolNotFound.vue'
+    import SubLanding from './landing/SubLanding.vue'
 
     export default {
         name: 'Landing',
         components: {
             SchoolPlate,
             LoadingSchoolPlate,
-            NotFound
+            NotFound,
+            SubLanding
         },
         data() {
           return {

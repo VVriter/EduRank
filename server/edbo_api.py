@@ -8,9 +8,9 @@ class EdboApiFetcher():
     def __init__(self, url):
         self.url = url
         response = requests.get(url)
-        response.encoding = 'utf-8'  # Set the encoding to UTF-8
+        response.encoding = 'utf-8'  
         if response.status_code == 200:
-            json_string = response.text  # Use text instead of content for decoding
+            json_string = response.text  
             self.json_response = json.loads(json_string)
             print('Database already loaded!')
         else:

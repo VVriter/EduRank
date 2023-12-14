@@ -12,7 +12,7 @@
         name: 'NotFound',
         methods: {
             replace() {
-                location.replace('/')
+                this.$router.push('/')
             }
         },
         data() {
@@ -40,7 +40,7 @@
 
     .fourzerofour {
         margin-top: 20vh;
-        width: 60vh;
+        width: 50vh;
         margin-left: auto;
         margin-right: auto;
         animation: bounce 1.3s infinite alternate;

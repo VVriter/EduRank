@@ -2,8 +2,8 @@ from edbo_api import EdboApiFetcher
 from search_engine import fetch_images_by_prompt, get_google_map_cords_by_prompt, FacebookApiProcessor
 from flask import Flask, jsonify, request, session
 from flask_cors import CORS
-from flask_session import Session
 from python_json_config import ConfigBuilder
+from database import Database
 
 
 builder = ConfigBuilder()
@@ -11,9 +11,8 @@ config = builder.parse_config('configuration.json')
 
 app = Flask(__name__)
 CORS(app=app)
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app=app)
+
+databae = Database(url=config.database, database_name=config.database_name)
 
 
 # all routers
@@ -55,40 +54,22 @@ def map():
     query = request.args.get('query')
     return jsonify(get_google_map_cords_by_prompt(prompt=query))
 
-@app.route('/api/me')
-def me():
-    return jsonify({
-        'success': True,
-        'logined': False,
-    })
+@app.route('/api/register', methods = ['POST'])
+def register():
+    try: 
+        data = request.json
+        print(data)
+        if data and data['name'] and data['surname'] and data['userType'] and (data['userType'] == "parrent" or data['userType'] == "pupil" or data['userType'] == "teacher") and data['email']:
+            databae.register_user(data)
+            return jsonify({'status': 'success'}), 200
+        else:
+            return jsonify({'status': 'failed'}), 400
+    except Exception as error:
+        print(error)
+        return jsonify({'status': 'failed', 'exception': error}), 500
 
-@app.route('/api/credentials/tg')
-def tg_creds():
-    return jsonify({
-        'username': config.tg_username,
-        'url': config.url,
-        'bot_id': config.tg_bot_id
-    })
-
-@app.route('/api/credentials/google')
-def google_creds():
-    return jsonify({
-        'id': config.google_0auth_client_id,
-        'secret': config.google_0auth_client_secret,
-        'url': config.url
-    })
-
-
-@app.route('/api/login/google')
-def login_via_google():
-    return jsonify({
-        'success': True
-    })
 
 if __name__ == "__main__":
     print('Starting application')
-    facebook = FacebookApiProcessor()
-    res = facebook.search('Трипільський ліцей')
-    print(res)
     databaseParser = EdboApiFetcher(url="https://registry.edbo.gov.ua/api/schools/?lc=&ut=3&exp=json")
     app.run(debug=True, port=5000)

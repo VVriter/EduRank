@@ -4,7 +4,8 @@
         <p class="school-title">{{ data.institution_name }}</p>
         <SchoolInfoPlate :data="data"/>
         <ReplaceButtons :data="data"/>
-        
+        <Ranking :data="data"/>
+        <Galery :images="images" :name="data.short_name" v-if="images && data"/>
     </div>
 
     <SchoolLoadingPlate v-if="!data"/>
@@ -14,12 +15,16 @@
     import SchoolInfoPlate from './school/SchoolInfoPlate.vue'
     import SchoolLoadingPlate from './landing/SchoolLoadingPlate.vue'
     import ReplaceButtons from './school/ReplaceButtons.vue'
+    import Galery from './school/Galery.vue'
+    import Ranking from './school/Ranking.vue'
 
     export default {
         components: {
             SchoolInfoPlate,
             SchoolLoadingPlate,
-            ReplaceButtons
+            ReplaceButtons,
+            Galery,
+            Ranking
         },
         data() {
             return {
@@ -32,7 +37,7 @@
         },  
         methods: {
             replace() {
-                location.replace('/')
+                this.$router.push('/')
             }
         },
         created() {
@@ -86,6 +91,10 @@
         border-radius: 50%;
         margin-top: 5vh;
         width: 40vh;
+    }
+
+    .logo:hover {
+        cursor: pointer;
     }
 
     .school-title {

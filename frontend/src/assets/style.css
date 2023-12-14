@@ -1,0 +1,32 @@
+@font-face {
+    font-family: 'MainFont';
+    src: url('font.woff2') format('woff2'),
+        url('font.woff') format('woff');
+}
+
+* {
+    font-family: 'MainFont';
+    hyphens: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--el-color-info-light-9);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--el-color-info);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--el-color-info);
+}
