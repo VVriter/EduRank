@@ -8,11 +8,12 @@
                 <div class="subBox" style="display: flex; flex-direction: column;">
                     <el-text style="font-size: 30px;">Сучасні проблеми потребують СУЧАСНИХ рішень. Суб-проєк EduJournal вирішує проблему взаємодії учнів та батьків.</el-text>
                     <el-text style="font-size: 30px; margin-top: 50px;">Проєкт EduJournal вирішує проблеми з якими зіштовхуються батьки та адміністрації шкіл при спробі приєднатись до інших ресурсів таких як Є-Школа.</el-text>
+                    <el-button @click="$router.push({name: 'Donate'})" type="primary" style="margin-top: 30px;" size="large">Підтримати нас!</el-button>
                 </div>
             </div>
         </div>
 
-        <div style="width: 100%; margin-top: 100px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div style="width: 100%; margin-top: 100px; margin-bottom: 100px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
             <el-text style="font-size: 40px;">Чому ми?</el-text>
             <div style="gap: 30px; display: flex; flex-wrap: wrap; margin-top: 30px; user-select: none;">
                 <el-row>
@@ -47,26 +48,6 @@
                     </div>
                 </el-row>
             </div>
-        </div>
-
-        <div style="margin-top: 100px; margin-bottom: 100px;">
-            <el-card shadow="hover" style="min-width: 400px; max-width: 400px;">
-                <template #header>
-                    <el-row>
-                        <el-text style="font-size: 20px;">Підтримати нас!</el-text>
-                        <el-icon style="margin-left: auto;" size="30px">
-                            <Money/>
-                        </el-icon>
-                    </el-row>
-                </template>
-
-                <el-text>Ваша підтримка безумовно важлива для нас, кожен хто пітримає нас - матиме доступ до БЕТА-ТЕСТУ нашого застосунку.</el-text>
-
-                <div style="margin-top: 10px; height: 50px; border-radius: 3px; background-color: var(--el-color-success-light-3); width: 100%; display: flex; flex-direction: row; align-items: center;">
-                    <img style="width: 30px; margin-left: 10px; border-radius: 5px;" src="@/assets/img/mono.jpg" alt="">
-                    <el-text style="margin-left: 10px;">4441 1111 3499 1490</el-text>
-                </div>
-            </el-card>
         </div>
     </main>
 </template>

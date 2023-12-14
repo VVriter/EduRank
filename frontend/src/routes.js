@@ -19,6 +19,16 @@ export default [
         path: "/login",
         component: () => import('@/views/Login.vue')
     },
+    {
+        name: "CheckEmail",
+        path: "/email",
+        component: () => import('@/views/CheckEmail.vue')
+    },
+    {
+        name: "Verify",
+        path: "/verify/:id",
+        component: () => import('@/views/Verify.vue')
+    },
 
     {
         name: "NotFound",

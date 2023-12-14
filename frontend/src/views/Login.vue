@@ -27,14 +27,14 @@
                     <el-radio-button label="teacher">Я вчитель</el-radio-button>
                 </el-radio-group>
                 <el-input v-model="email" style="margin-top: 10px;" placeholder="Електронна пошта"/>
-                <el-button :loading="loading" @click="register" size="large" type="primary" style="margin-top: 10px;">
+                <el-button :disabled="!(name && surname && email && userType)" :loading="loading" @click="register" size="large" type="primary" style="margin-top: 10px;">
                     Зареєструватись
                 </el-button>
             </div>
 
             <div style="margin-top: 10px; display: flex; flex-direction: column; width: 100%;" v-else>
-                <el-input placeholder="Електронна пошта"/>
-                <el-button size="large" type="primary" style="margin-top: 10px;">Ввійти</el-button>
+                <el-input v-model="email" placeholder="Електронна пошта"/>
+                <el-button @click="login" :loading="loading" :disabled="!email" size="large" type="primary" style="margin-top: 10px;">Ввійти</el-button>
             </div>
         </el-card>
     </main>
@@ -42,7 +42,19 @@
 
 <script setup>
     import { User } from '@element-plus/icons-vue'
-    import { ref, computed } from 'vue'
+    import { ref, computed, onMounted } from 'vue'
+    import { useUserStore } from '../stores/userStore'
+    import { ElNotification } from 'element-plus'
+    import { useRouter } from 'vue-router'
+
+    const router = useRouter()
+
+    const userStore = useUserStore()
+    onMounted(async () => {
+        if (userStore.loginned) 
+            router.push({name: "Home"})
+    })
+
     const loginType = ref('registration')
     const titleText = computed(() => {
         return loginType.value == 'login' ? "Вхід" : "Реєстрація"
@@ -54,9 +66,69 @@
     const userType = ref('pupil')
     const loading = ref(false)
 
-    function register() {
+    async function login() {
         loading.value = true
-        fetch("/api/register", {
+
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)) {
+            ElNotification({
+                title: 'Помилка',
+                message: 'Електронна пошта введена не правильно',
+                type: 'error',
+            })
+            setTimeout(() => {
+                loading.value = false
+                email.value = null
+            }, 1000)
+            return
+        }
+
+        const res = await fetch(`/api/login`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email.value
+            })
+        })
+
+        if (res.status == 200) {
+            router.push(`/email?email=${email.value}`)
+        } else {
+            ElNotification({
+                title: 'Невідома помилка',
+                message: 'Перевірте чи правильно заповнена форма, та чи не використовували ви цей емайл раніше на нашому сайті.',
+                type: 'error',
+            })
+            setTimeout(() => {
+                loading.value = false
+            }, 1000)
+        }
+    }
+
+    async function register() {
+        loading.value = true
+
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)) {
+            ElNotification({
+                title: 'Помилка',
+                message: 'Електронна пошта введена не правильно',
+                type: 'error',
+            })
+            setTimeout(() => {
+                loading.value = false
+                email.value = null
+            }, 1000)
+            return
+        }
+
+        if (!name.value || !surname.value || !email.value || !userType.value) {
+
+            loading.value = false
+            return
+        }
+
+        const res = await fetch("/api/register", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -68,6 +140,20 @@
                 userType: userType.value
             })
         })
+
+        if (res.status == 200) {
+            router.push(`/email?email=${email.value}`)
+        } else {
+            ElNotification({
+                title: 'Невідома помилка',
+                message: 'Перевірте чи правильно заповнена форма, та чи не використовували ви цей емайл раніше на нашому сайті.',
+                type: 'error',
+            })
+            setTimeout(() => {
+                loading.value = false
+            }, 1000)
+        }
+
         loading.value = false
     }
 </script>

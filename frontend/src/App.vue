@@ -13,6 +13,10 @@
   const uiStore = useUiConfigStore()
   uiStore.applyTheme()
 
+  import { useUserStore } from './stores/userStore';
+  const userStore = useUserStore()
+  userStore.updateUserInfo()
+
 
   watch(
     () => uiStore.isDarkModeOn,

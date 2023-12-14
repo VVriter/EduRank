@@ -4,6 +4,9 @@ from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 from python_json_config import ConfigBuilder
 from database import Database
+import requests
+import uuid
+import json
 
 
 builder = ConfigBuilder()
@@ -12,7 +15,7 @@ config = builder.parse_config('configuration.json')
 app = Flask(__name__)
 CORS(app=app)
 
-databae = Database(url=config.database, database_name=config.database_name)
+database = Database(url=config.database, database_name=config.database_name)
 
 
 # all routers
@@ -60,7 +63,9 @@ def register():
         data = request.json
         print(data)
         if data and data['name'] and data['surname'] and data['userType'] and (data['userType'] == "parrent" or data['userType'] == "pupil" or data['userType'] == "teacher") and data['email']:
-            databae.register_user(data)
+            if database.is_user_already_exists(data['email']):
+                return jsonify({'status': 'failed'}), 400
+            database.register_user(data)
             return jsonify({'status': 'success'}), 200
         else:
             return jsonify({'status': 'failed'}), 400
@@ -68,6 +73,74 @@ def register():
         print(error)
         return jsonify({'status': 'failed', 'exception': error}), 500
 
+@app.route('/api/verify', methods = ['POST'])
+def verify():
+    userId = request.args.get('id')
+    if not userId:
+        return jsonify({'status': 'failed'}), 400
+    if database.verify_user(userId):
+        return jsonify({'status': 'success', 'token': userId}), 200
+    else:
+        return jsonify({'status': 'failed'}), 400
+
+@app.route('/api/login', methods = ['POST'])
+def login():
+    email = request.json['email']
+    if not email:
+        return jsonify({'status': 'failed'}), 400
+    if database.is_user_already_exists(email):
+        database.send_verify_login(email)
+        return jsonify({'status': 'success'}), 200
+    else:
+        return jsonify({'status': 'failed'}), 400
+    
+@app.route('/api/me', methods = ['GET'])
+def me():
+    token = request.headers.get('token')
+    if token:
+        user = database.get_user(token)
+        if user:
+            return jsonify({'status': 'success', 'user': {
+                'name': user['name'],
+                'surname': user['surname'],
+                'email': user['email'],
+                'userType': user['userType']
+            }}), 200
+        else:
+            return jsonify({'status': 'failed', 'message': 'Invalid token'}), 400
+    else:
+        return jsonify({'status': 'failed', 'message': 'Invalid token'}), 400
+    
+@app.route('/api/donate', methods = ['POST'])
+def donate():
+
+    data = request.json
+
+    amount = int(request.args.get('amount'))
+    description = data['description']
+    contact = data['contact']
+
+    if not amount or not contact:
+        return jsonify({'status': 'failed'}), 400
+
+    token = config.mono_token
+    headers = {
+        'Content-Type': 'application/json',
+        'X-Token': token
+    }
+    body = {
+        'amount': amount,
+        'ccy': 980,
+        'merchantPaymInfo': {
+            'reference': str(uuid.uuid4()),
+            'destination': f"Донат в підтримку проєкту EduRank від {contact}",
+            'comment': description if description else 'Без опису',
+        },
+        'redirectUrl': 'http://localhost/donate/success'
+    }
+    response = requests.post('https://api.monobank.ua/api/merchant/invoice/create', headers=headers, data=json.dumps(body))
+    json_response = response.json()
+    return jsonify({'status': 'success', 'mono': json_response}), 200
 
 if __name__ == "__main__":
     print('Starting application')
