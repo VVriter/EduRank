@@ -1,25 +1,23 @@
 <template>
     <div class="container">
-        <el-input v-model="input" placeholder="Введіть назву школи..." size="large">
+        <el-input v-model="searchSchoolStore.input" placeholder="Введіть назву школи..." size="large">
             <template #prepend>
                 <el-button :icon="Search" />
             </template>
-            <template #append>
+          <!--  <template #append>
                 <el-button :icon="Promotion" />
-            </template>
+            </template>-->
         </el-input>
-        <el-button :icon="Filter" size="large" plain type="info">
+        <!--<el-button :icon="Filter" size="large" plain type="info">
 
-        </el-button>
+        </el-button>-->
     </div>
 </template>
 
 <script setup>
     import { Search, Promotion, Filter } from '@element-plus/icons-vue'
-    import { ref } from 'vue'
-    const input = ref()
-
-
+    import { useSearchSchoolStore } from '../../stores/searchSchoolStore';
+    const searchSchoolStore = useSearchSchoolStore()
 </script>
 
 <style scoped>

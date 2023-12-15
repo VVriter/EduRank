@@ -2,12 +2,14 @@
   <main>
     <NavBar/>
     <router-view class="router"/>
+    <Footer class="footer"/>
   </main>
 </template>
 
 <script setup>
   import NavBar from './components/navbar/NavBar.vue';
-  import { watch } from 'vue'
+  import Footer from './components/footer/Footer.vue'
+  import { watch, onMounted, onUnmounted } from 'vue'
 
   import { useUiConfigStore } from './stores/uiThemeStore'
   const uiStore = useUiConfigStore()
@@ -33,8 +35,16 @@
       flex-direction: column;
       width: 100%;
       align-items: center;
+      justify-content: center;
   }
 
+  .footer {
+    width: 90%;
+    padding: 20px 0;
+    text-align: center;
+    bottom: 0;
+    left: 0;
+  }
   .router {
     margin-top: 0px;
   }

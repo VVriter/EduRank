@@ -29,6 +29,11 @@ export default [
         path: "/verify/:id",
         component: () => import('@/views/Verify.vue')
     },
+    {
+        name: "School",
+        path: "/school/:id",
+        component: () => import('@/views/School.vue')
+    },
 
     {
         name: "NotFound",

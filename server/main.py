@@ -22,14 +22,18 @@ database = Database(url=config.database, database_name=config.database_name)
 @app.route('/api/search')
 def search():
     query = request.args.get('query', '').lower()
+    limit = request.args.get('limit')
     schools = databaseParser.get_json_response()
 
     matching_schools = [school for school in schools if query in school['institution_name'].lower() or query in school['short_name'].lower()]
 
     if len(query) <= 3:
-        response_schools = matching_schools[:5]
+        response_schools = matching_schools[:2]
     else:
-        response_schools = matching_schools
+        if limit:
+            response_schools = matching_schools[:int(limit)]
+        else:
+            response_schools = matching_schools[:2]
 
     return jsonify(response_schools)
 
