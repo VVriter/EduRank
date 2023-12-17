@@ -7,6 +7,7 @@ from database import Database
 import requests
 import uuid
 import json
+import base64
 
 
 builder = ConfigBuilder()
@@ -22,6 +23,7 @@ database = Database(url=config.database, database_name=config.database_name)
 @app.route('/api/search')
 def search():
     query = request.args.get('query', '').lower()
+    query = base64.b64decode(query).decode('utf-8')
     limit = request.args.get('limit')
     schools = databaseParser.get_json_response()
 
