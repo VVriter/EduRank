@@ -9,6 +9,7 @@ class Database():
         self.client = MongoClient(self.url)
         self.db = self.client[database_name]
         self.users_collection = self.db['users']
+        self.reviews_collection = self.db['reviews']
 
     def register_user(self, user_data):
         if not all(key in user_data for key in ('name', 'surname', 'userType', 'email')):
@@ -20,6 +21,7 @@ class Database():
             'userType': user_data['userType'],
             'email': user_data['email'],
             'verified': False,
+            'reviews': [],
             'date': datetime.datetime.now(tz=datetime.timezone.utc)
         }
 
@@ -75,4 +77,7 @@ class Database():
         
     def get_user(self, token):
         return self.users_collection.find_one({'_id': ObjectId(token)})
+    
+    def get_reviews(self, edbo):
+        return self.reviews_collection.find_one({'edbo', edbo})
         

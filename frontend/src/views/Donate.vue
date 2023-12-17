@@ -12,15 +12,17 @@
                 <el-text type="info" style="margin-top: 20px; font-size: 18px;">Виберіть тариф котрий вам найбільше підходить, та підтримайте майбутнє нашої держави!</el-text>
 
                 <div v-if="state == 1" style="gap: 10px; margin-top: 50px; width: 100%; display: flex; flex-wrap: wrap; justify-content: center; align-items: center;">
-                    <el-button type="info" plain @click="setCount(5000)" style="margin: 0; width: 15vh; height: 15vh;">50₴</el-button>
-                    <el-button type="info" plain @click="setCount(10000)" style="margin: 0; width: 15vh; height: 15vh;">100₴</el-button>
-                    <el-button type="info" plain @click="setCount(30000)" style="margin: 0; width: 15vh; height: 15vh;">300₴</el-button>
-                    <el-button type="info" plain @click="setCount(50000)" style="margin: 0; width: 15vh; height: 15vh;">500₴</el-button>
+                    <el-button type="info" plain @click="setCount(50)" style="margin: 0; width: 15vh; height: 15vh;">50₴</el-button>
+                    <el-button type="info" plain @click="setCount(100)" style="margin: 0; width: 15vh; height: 15vh;">100₴</el-button>
+                    <el-button type="info" plain @click="setCount(300)" style="margin: 0; width: 15vh; height: 15vh;">300₴</el-button>
+                    <el-button type="info" plain @click="setCount(500)" style="margin: 0; width: 15vh; height: 15vh;">500₴</el-button>
+                    <el-button type="danger" plain @click="myCount" style="margin: 0; width: 15vh; height: 15vh;">Своя сумма</el-button>
                 </div>
 
                 <div v-if="state == 2" style="margin-top: 50px; width: 100%;">
                     <el-input v-model="name" style="margin-top: 10px;" placeholder="Ім'я та прізвище" size="large"/>
                     <el-input v-model="contact" style="margin-top: 10px;" placeholder="Контактні данні" size="large"/>
+                    <el-input placeholder="Поставте сумму для оплати" size="large" style="margin-top: 10px;" type="number" v-if="isSelfChooSeCount" v-model="plan"/>
                     <el-input v-model="message" style="margin-top: 10px;" type="textarea" placeholder="Повідомлення розробникам (не обов'язково)" size="large"/>
                     <el-button @click="donate" :loading="loading" :disabled="!(name && contact)" style="margin-top: 10px; width: 100%;" size="large" plain type="primary">Задонатити!</el-button>
                 </div>
@@ -49,9 +51,17 @@
         state.value++
     }
 
+    const isSelfChooSeCount = ref(false)
+
+    function myCount() {
+        isSelfChooSeCount.value = true
+        plan.value = 350
+        state.value++
+    }
+
     async function donate() {
         loading.value = true
-        const res = await fetch(`/api/donate?amount=${plan.value}`, {
+        const res = await fetch(`/api/donate?amount=${plan.value}00`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

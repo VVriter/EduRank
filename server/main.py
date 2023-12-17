@@ -146,6 +146,22 @@ def donate():
     json_response = response.json()
     return jsonify({'status': 'success', 'mono': json_response}), 200
 
+@app.route('/api/reviews', methods = ['PUT'])
+def reviews_add():
+    pass
+
+@app.route('/api/reviews', methods = ['GET'])
+def reviews_get():  
+    edbo = request.args.get('query')
+    if not edbo:
+        return jsonify({'status': 'failed'}), 400
+    else:
+        reviews = database.get_reviews(edbo)
+        if not reviews:
+            return jsonify({'status': 'success', 'reviews': []}), 200
+        else:
+            return jsonify({'status': 'success', 'reviews': reviews}), 200
+
 if __name__ == "__main__":
     print('Starting application')
     databaseParser = EdboApiFetcher(url="https://registry.edbo.gov.ua/api/schools/?lc=&ut=3&exp=json")

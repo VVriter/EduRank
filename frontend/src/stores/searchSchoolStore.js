@@ -12,14 +12,14 @@ export const useSearchSchoolStore = defineStore('searchSchoolStore', {
         async schoolsList() {
             if (!this.input)
                 return null
-            const respose = await fetch(`/api/search?query=${this.input}`)
+            const respose = await fetch(`/api/search?query=${btoa(this.input)}`)
             const json = await respose.json()
             return json
         },
         async schoolsListWithLimit(limit) {
             if (!this.input)
                 return null
-            const respose = await fetch(`/api/search?query=${this.input}&limit=${limit}`)
+            const respose = await fetch(`/api/search?query=${btoa(this.input)}&limit=${limit}`)
             const json = await respose.json()
             return json
         },
@@ -32,6 +32,11 @@ export const useSearchSchoolStore = defineStore('searchSchoolStore', {
 
             const list = await Promise.all(promises);
             return list;
+        },
+        async getSchoolById(id) {
+            const response = await fetch(`/api/edbo?query=${id}`);
+            const json = await response.json();
+            return json;
         }
     }
 })

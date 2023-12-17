@@ -11,8 +11,9 @@
             </el-row>
         </template>
 
+        <el-text type="info" style="margin-bottom: 20px;">{{school.institution_name}}</el-text>
     
-        <el-row style="gap: 10px;">
+        <el-row style="gap: 10px; margin-top: 10px;">
             <el-tag round size="large">Відчинено</el-tag>
             <el-tag round size="large">{{ school.phone }}</el-tag>
         </el-row>
@@ -33,12 +34,12 @@
     width: 100%;
     cursor: pointer;
     border-radius: 10px;
-    min-height: 200px;
+    min-height: 250px;
 }
 
 @media only screen and (max-width: 767px) {
     .card {
-        min-height: 250px;
+        min-height: 300px;
     }
 }
 </style>
