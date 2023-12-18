@@ -2,7 +2,8 @@
     <main v-if="school">
         <div class="left">
             <SchoolPlate :school="school"/>
-        </div>
+            <Map style="width: 100%; margin-top: 10px;" :prompt="school.koatuu_name + ' ' + school.address"/>
+        </div> 
         <div class="center">
             <Reviews :school="school"/>
         </div>
@@ -65,6 +66,8 @@
 
 <script setup>
 
+    import Map from '../components/school/Map.vue'
+
     import SchoolPlate from '@/components/school/SchoolPlate.vue';
     import Reviews from '@/components/school/Reviews.vue';
     import Rating from '@/components/school/Rating.vue';
@@ -88,9 +91,9 @@
             background: 'rgba(0, 0, 0, 0.0)',
         })
 
-        setTimeout(async () => {
-            school.value = await searchSchoolStore.getSchoolById(route.params.id)
-            loading.close()
-        }, 1000)
+   
+        school.value = await searchSchoolStore.getSchoolById(route.params.id)
+        loading.close()
+      
     })
 </script>

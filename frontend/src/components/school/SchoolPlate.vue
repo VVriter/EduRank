@@ -12,7 +12,7 @@
             <el-card body-style="padding: 10px;" style="cursor: pointer; display: flex; justify-content: start; align-items: center;" shadow="hover">
                 <div style="display: flex; flex-direction: row;">
                     <el-icon size="30px"><School/></el-icon>
-                    <el-text style="width: 55%; margin-left: 5px;" truncated>{{ school.institution_name }}</el-text>
+                    <el-text style="width: 55%; margin-left: 5px;">{{ school.institution_name }}</el-text>
                 </div>
             </el-card>
 
@@ -79,9 +79,9 @@
     const erroredImageLoading = ref(false)
 
     onMounted(async () => {
-        const res = await fetch(`/api/images?query=${props.school.institution_name}`)
+        const res = await fetch(`/api/images?query=${props.school.institution_name}&edbo=${props.school.institution_id}`)
         const json = await res.json()
-        image.value = json.items[0].link
+        image.value = json.items.filter((item) => item.fileFormat != "image/")[0].link
     })
 
 </script>

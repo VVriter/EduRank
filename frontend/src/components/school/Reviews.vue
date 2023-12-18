@@ -37,7 +37,7 @@
 
     import { ref, computed } from 'vue'
 
-    const isReviewAdd = ref(false)
+    const isReviewAdd = ref(true)
 
     const icon = computed(() => {
         return isReviewAdd.value ? ArrowUpBold : ArrowDownBold

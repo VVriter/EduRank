@@ -12,7 +12,6 @@
 
                 <el-row style="margin-left: auto; margin-top: auto; margin-bottom: auto;">
                     <ThemeSwitcher style="margin-right: 10px;" />
-                    <el-button size="large" plain>Школи</el-button>
                     <el-button size="large" plain @click="goto('EJournal')">Є-Журнал</el-button>
                     <el-button size="large" plain @click="goto('Donate')">Донат</el-button>
                 </el-row>
@@ -68,14 +67,19 @@ nav {
     justify-content: center;
     align-items: center;
     margin: 10px;
+    transition: all 1s;
 }
 
 .full {
     width: 100%;
+    transition: transform 0.5s ease-in-out;
+    transform: translateY(0);
 }
 
 .min {
-    width: 60%;
+  width: 100%;
+    transition: transform 0.5s ease-in-out;
+    transform: translateY(-110%);
 }
 
 @media (max-width: 768px) {

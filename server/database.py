@@ -10,6 +10,7 @@ class Database():
         self.db = self.client[database_name]
         self.users_collection = self.db['users']
         self.reviews_collection = self.db['reviews']
+        self.images_collection = self.db['images']
 
     def register_user(self, user_data):
         if not all(key in user_data for key in ('name', 'surname', 'userType', 'email')):

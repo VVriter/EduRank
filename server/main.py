@@ -7,7 +7,6 @@ from database import Database
 import requests
 import uuid
 import json
-import base64
 
 
 builder = ConfigBuilder()
@@ -19,11 +18,10 @@ CORS(app=app)
 database = Database(url=config.database, database_name=config.database_name)
 
 
-# all routers
 @app.route('/api/search')
 def search():
     query = request.args.get('query', '').lower()
-    query = base64.b64decode(query).decode('utf-8')
+    print(query)
     limit = request.args.get('limit')
     schools = databaseParser.get_json_response()
 
@@ -56,7 +54,21 @@ def edbo():
 @app.route('/api/images')
 def images():
     query = request.args.get('query')
-    return jsonify(fetch_images_by_prompt(prompt=query))
+    edbo = request.args.get('edbo')
+
+    if not query or not edbo:
+        return jsonify({'status': 'failed', 'message': 'Bad params'}), 400
+    
+    images = database.images_collection.find_one({"edbo": edbo})
+
+    if not images:
+        images_loaded = fetch_images_by_prompt(prompt=query)
+        database.images_collection.insert_one({"edbo": edbo, "items": images_loaded['items']})
+        return jsonify(images_loaded)
+    else:
+        return jsonify({
+            "items": images['items']
+        })
 
 @app.route('/api/map')
 def map():

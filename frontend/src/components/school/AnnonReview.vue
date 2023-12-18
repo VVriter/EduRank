@@ -29,7 +29,7 @@
             v-if="state == 3">
             <img style="width: 200px;" src="@/assets/img/trophy.png" alt="">
             <el-text style="font-size: 20px; text-align: center;">Ваш відгук записано! Дякую, що сприяєте розвитку
-            демократії в нашій країні :)</el-text>
+            демократії в нашій країні :). Приблизно за годину ваш відгук з'явиться на сайті.</el-text>
         </div>
     </el-card>
 </template>

@@ -12,14 +12,14 @@ export const useSearchSchoolStore = defineStore('searchSchoolStore', {
         async schoolsList() {
             if (!this.input)
                 return null
-            const respose = await fetch(`/api/search?query=${btoa(this.input)}`)
+            const respose = await fetch(`/api/search?query=${this.input}`)
             const json = await respose.json()
             return json
         },
         async schoolsListWithLimit(limit) {
             if (!this.input)
                 return null
-            const respose = await fetch(`/api/search?query=${btoa(this.input)}&limit=${limit}`)
+            const respose = await fetch(`/api/search?query=${this.input}&limit=${limit}`)
             const json = await respose.json()
             return json
         },
