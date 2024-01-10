@@ -1,5 +1,4 @@
 from edbo_api import EdboApiFetcher
-from search_engine import fetch_images_by_prompt, get_google_map_cords_by_prompt, FacebookApiProcessor
 from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 from python_json_config import ConfigBuilder
@@ -7,6 +6,10 @@ from database import Database
 import requests
 import uuid
 import json
+import datetime
+from bson import ObjectId
+from tg_bot import TgBot
+from search_engine import fetch_images_by_prompt
 
 
 builder = ConfigBuilder()
@@ -16,6 +19,8 @@ app = Flask(__name__)
 CORS(app=app)
 
 database = Database(url=config.database, database_name=config.database_name)
+tg_bot = TgBot(config.tg_bot_token, config.admin_id, database)
+databaseParser = EdboApiFetcher(config.schools_list_api_url, database)
 
 
 @app.route('/api/search')
@@ -115,15 +120,12 @@ def login():
 @app.route('/api/me', methods = ['GET'])
 def me():
     token = request.headers.get('token')
+    if token == 'null':
+        return jsonify({'status': 'failed', 'message': 'Invalid token'}), 400
     if token:
         user = database.get_user(token)
         if user:
-            return jsonify({'status': 'success', 'user': {
-                'name': user['name'],
-                'surname': user['surname'],
-                'email': user['email'],
-                'userType': user['userType']
-            }}), 200
+            return jsonify({'status': 'success', 'user': user}), 200
         else:
             return jsonify({'status': 'failed', 'message': 'Invalid token'}), 400
     else:
@@ -154,7 +156,7 @@ def donate():
             'destination': f"Донат в підтримку проєкту EduRank від {contact}",
             'comment': description if description else 'Без опису',
         },
-        'redirectUrl': 'http://localhost/donate/success'
+        'redirectUrl': f'{config.domen}/donate/success'
     }
     response = requests.post('https://api.monobank.ua/api/merchant/invoice/create', headers=headers, data=json.dumps(body))
     json_response = response.json()
@@ -162,11 +164,54 @@ def donate():
 
 @app.route('/api/reviews', methods = ['PUT'])
 def reviews_add():
-    pass
+    token = request.headers.get('token')
+    edbo = request.args.get('edbo')
+    data = request.json
+
+    if not token or not edbo or not data:
+        return jsonify({'status': 'failed', 'message': 'Bad params'}), 400
+    
+    user = database.get_user(token)
+    if edbo in user['reviews']:
+        return jsonify({'status': 'failed', 'message': 'Review already exists'}), 400
+    if not user:
+        return jsonify({'status': 'failed', 'message': 'Unknown user'}), 400
+    
+    database.reviews_collection.insert_one({
+        'approved': True,
+        'annon': False,
+        'edbo': edbo,
+        'review': data,
+        'user': user,
+        'time': datetime.datetime.now(tz=datetime.timezone.utc)
+    })
+
+    database.users_collection.update_one({'_id': ObjectId(token)}, {'$push': {'reviews': edbo}})
+    return jsonify({'status': 'success'}), 200
+
+@app.route('/api/reviews/annon', methods = ['PUT'])
+def annon_reviews_add():
+    data = request.json
+    edbo = request.args.get('edbo')
+
+    if not edbo or not data:
+        return jsonify({'status': 'failed', 'message': 'Bad params'}), 400
+
+    id = database.reviews_collection.insert_one({
+        'approved': False,
+        'edbo': edbo,
+        'review': data,
+        'time': datetime.datetime.now(tz=datetime.timezone.utc)
+    }).inserted_id
+
+    tg_bot.send_for_approvement(data, id)
+
+    return jsonify({'status': 'success'}), 200
+
 
 @app.route('/api/reviews', methods = ['GET'])
 def reviews_get():  
-    edbo = request.args.get('query')
+    edbo = request.args.get('edbo')
     if not edbo:
         return jsonify({'status': 'failed'}), 400
     else:
@@ -174,9 +219,9 @@ def reviews_get():
         if not reviews:
             return jsonify({'status': 'success', 'reviews': []}), 200
         else:
-            return jsonify({'status': 'success', 'reviews': reviews}), 200
+            return jsonify({'status': 'success', 'reviews': [json.dumps(document, default=str) for document in reviews]}), 200
 
 if __name__ == "__main__":
     print('Starting application')
-    databaseParser = EdboApiFetcher(url="https://registry.edbo.gov.ua/api/schools/?lc=&ut=3&exp=json")
-    app.run(debug=True, port=5000)
+    tg_bot.start_polling()
+    app.run(debug=False, port=5000)

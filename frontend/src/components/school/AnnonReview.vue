@@ -45,11 +45,24 @@
     const name = ref()
     const age = ref()
 
-    async function sendReview() {
-        state.value++
-    }
-
     const props = defineProps({
         school: { required: true }
     })
+
+    async function sendReview() {
+        state.value++
+
+        const res = await fetch(`/api/reviews/annon?edbo=${props.school.institution_id}`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                description: description.value,
+                rate: rate.value,
+                name: name.value,
+                age: age.value
+            })
+        })
+    }
 </script>

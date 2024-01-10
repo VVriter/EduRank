@@ -43,6 +43,7 @@
         display: flex;
         flex-direction: column;
         gap: 10px;
+        margin-top: 10px;
     }
 
     @media only screen and (max-width: 767px) {

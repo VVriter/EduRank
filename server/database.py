@@ -2,15 +2,21 @@ from pymongo import MongoClient
 import datetime
 from mailing import send_html_email
 from bson import ObjectId
+
+from python_json_config import ConfigBuilder
+builder = ConfigBuilder()
+config = builder.parse_config('configuration.json')
  
 class Database():
     def __init__(self, url, database_name):
         self.url = url
         self.client = MongoClient(self.url)
+        print("Mongo db connected")
         self.db = self.client[database_name]
         self.users_collection = self.db['users']
         self.reviews_collection = self.db['reviews']
         self.images_collection = self.db['images']
+        self.schools_collection = self.db['schools']
 
     def register_user(self, user_data):
         if not all(key in user_data for key in ('name', 'surname', 'userType', 'email')):
@@ -34,7 +40,7 @@ class Database():
                         <img style="margin: auto; width: 300px; border-radius: 50%;" src="https://cdn.discordapp.com/attachments/1067766486673936438/1184864772571811880/logo.png?ex=658d864f&is=657b114f&hm=640709c9caaae0b161ab47ce5a9784687a19d2c6d9d6743573607c72b9326fc1&" alt="">
                         <h1 style="margin: auto; text-align: center; color: white; padding: 0; margin: 0;">Вітаємо вас {user['name']}!</h1>
                         <p style="width: 50%; margin: auto; text-align: center; margin-top: 10px; color: rgba(255, 255, 255, 0.671);">Щоб пройти веріфікацію - натисніть на кнопку нижче. Пам'ятайте, ваші данні в повній безпеці</p>
-                        <a style="border-radius: 10px; width: 50%; margin: auto; text-align: center; padding: 10px; text-decoration: none; background-color: azure; display: block; margin-top: 20px;" href="http://localhost/verify/{post_id}">
+                        <a style="border-radius: 10px; width: 50%; margin: auto; text-align: center; padding: 10px; text-decoration: none; background-color: azure; display: block; margin-top: 20px;" href="{config.domen}/verify/{post_id}">
                             <p style="margin: auto; color: black; background-color: azure;">Підтвердити!</p>
                         </a> 
                     </div>   
@@ -69,7 +75,7 @@ class Database():
                         <img style="margin: auto; width: 300px; border-radius: 50%;" src="https://cdn.discordapp.com/attachments/1067766486673936438/1184864772571811880/logo.png?ex=658d864f&is=657b114f&hm=640709c9caaae0b161ab47ce5a9784687a19d2c6d9d6743573607c72b9326fc1&" alt="">
                         <h1 style="margin: auto; text-align: center; color: white; padding: 0; margin: 0;">Вітаємо вас {user['name']}!</h1>
                         <p style="width: 50%; margin: auto; text-align: center; margin-top: 10px; color: rgba(255, 255, 255, 0.671);">Щоб пройти веріфікацію - натисніть на кнопку нижче. Пам'ятайте, ваші данні в повній безпеці</p>
-                        <a style="border-radius: 10px; width: 50%; margin: auto; text-align: center; padding: 10px; text-decoration: none; background-color: azure; display: block; margin-top: 20px;" href="http://localhost/verify/{user['_id']}">
+                        <a style="border-radius: 10px; width: 50%; margin: auto; text-align: center; padding: 10px; text-decoration: none; background-color: azure; display: block; margin-top: 20px;" href="{config.domen}/verify/{user['_id']}">
                             <p style="margin: auto; color: black; background-color: azure;">Підтвердити!</p>
                         </a> 
                     </div>   
@@ -77,8 +83,8 @@ class Database():
             """, subject="Веріфікація EduRank")
         
     def get_user(self, token):
-        return self.users_collection.find_one({'_id': ObjectId(token)})
+        return self.users_collection.find_one({'_id': ObjectId(token)}, {'_id': 0})
     
     def get_reviews(self, edbo):
-        return self.reviews_collection.find_one({'edbo', edbo})
+        return self.reviews_collection.find({'edbo': edbo, 'approved': True}, {'_id': 0})
         

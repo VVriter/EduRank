@@ -8,6 +8,8 @@ export const useUserStore = defineStore('userStore', {
     }),
     actions: {
         async updateUserInfo() {
+            this.loginned = localStorage.getItem('token') ? localStorage.getItem('token') : false
+            this.token = localStorage.getItem('token')
             const res = await fetch('/api/me', {
                 method: "GET",
                 headers: {

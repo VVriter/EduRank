@@ -12,8 +12,8 @@
 
             <el-text type="info">Дякую, що вибрали нас! Обіцяємо вам найприємніші враження від використання нашого додатку.</el-text>
             <el-row style="margin-top: 10px;">
-                <el-button @click="$router.push({name: 'Home'})" :icon="Trophy" plain size="large" type="warning">Оцінити школу!</el-button>
-                <el-button @click="$router.push({ name: 'Home' })" size="large" type="success" plain :icon="HomeFilled">Додому</el-button>
+                <el-button @click="toMain" :icon="Trophy" plain size="large" type="warning">Оцінити школу!</el-button>
+                <el-button @click="toMain" size="large" type="success" plain :icon="HomeFilled">Додому</el-button>
             </el-row>
         </el-card>
 
@@ -36,11 +36,17 @@
     import { Check, Trophy, HomeFilled, Close } from '@element-plus/icons-vue'
     import { useRouter, useRoute } from 'vue-router'
     import { onMounted, ref } from 'vue'
+    import { useUserStore } from '../stores/userStore'
+    const userStore = useUserStore()
     const router = useRouter()
     const route = useRoute()
     const id = route.params.id
 
     const isSuccess = ref()
+
+    function toMain() {
+        location.replace('/')
+    }
 
     onMounted(async () => {
         const response = await fetch(`/api/verify?id=${id}`, { method: "POST" })
@@ -54,5 +60,6 @@
 
         const json = await response.json()
         localStorage.setItem('token', json.token)
+        userStore.updateUserInfo()
     })
 </script>

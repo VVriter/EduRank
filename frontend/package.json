@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "vite --host"
   },
   "dependencies": {
     "@fawmi/vue-google-maps": "^0.9.79",

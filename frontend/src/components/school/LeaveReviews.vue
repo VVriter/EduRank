@@ -35,11 +35,26 @@
     const state = ref(1)
     const rate = ref()
 
-    async function sendReview() {
-        state.value++
-    }
-
     const props = defineProps({
         school: { required: true }
     })
+
+    async function sendReview() {
+        state.value++
+        const res = await fetch(`/api/reviews?edbo=${props.school.institution_id}`, {
+            method: "PUT",
+            headers: {
+                'token': localStorage.getItem('token'),
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                description: description.value,
+                rate: rate.value
+            })
+        })
+
+        setTimeout(() => {
+            location.reload()
+        }, 5000);
+    }
 </script>

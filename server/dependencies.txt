@@ -1,5 +1,5 @@
 flask
 flask-cors
 python_json_config
-facebook-sdk
 pymongo
+pytelegrambotapi
