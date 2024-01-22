@@ -1,0 +1,36 @@
+version: '3'
+services:
+  backend:
+    image: backend
+    container_name: backend
+    build: ./backend
+    volumes:
+      - ./backend/configuration.json:/app/configuration.json
+    networks:
+      - network1
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    container_name: mongodb-${COMPOSE_PROJECT_NAME}
+    volumes:
+      - ./run/mongodb:/data/db
+    networks:
+      - network1
+
+  nginx:
+    image: nginx
+    container_name: nginx-${COMPOSE_PROJECT_NAME}
+    ports:
+      - "127.0.0.1:5010:80"
+    depends_on:
+      - backend
+    networks:
+      - network1
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./frontend/:/usr/share/nginx/
+
+networks:
+  network1:
