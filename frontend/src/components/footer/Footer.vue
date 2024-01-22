@@ -49,7 +49,7 @@
         margin-left: auto; display: flex; flex-direction: column; margin-right: 100px;
     }
 
-    @media only screen and (max-width: 767px) {
+    @media only screen and (max-width: 1000px) {
         .con {
             flex-direction: column;
             margin-bottom: 100px;

@@ -1,13 +1,12 @@
 <template>
     <div v-if="searchedSchools && searchedSchools.length !== 0 && searchSchoolStore.input != null" class="containager">
         <SearchedSchoolPlate v-for="(school, index) in searchedSchools" :key="index" :school="school"/>
-        <el-button type="info" plain v-if="showMoreMayBeShown" :loading="loading" @click="showMore" :icon="ArrowDownBold" style="width: 100%;">Показати більше</el-button>
+        <el-button size="large" type="success" plain v-if="showMoreMayBeShown" :loading="loading" @click="showMore" :icon="ArrowDownBold" style="width: 100%;">Показати більше</el-button>
     </div>
 
     <div v-else class="containager">
         <SearchedSchoolPlate v-for="(school, index) in recomended" :key="index" :school="school"/>
     </div>
-
 </template>
 
 <style scoped>
@@ -18,13 +17,14 @@
     align-items: center;
     gap: 10px;
     margin-top: 10px;
-    max-height: 40vh;
     overflow-y: scroll;
     overflow-x: hidden;
     position: relative;
     padding: 10px;
     background-color: var(--el-color-info-light-8);
     border-radius: 5px;
+    height: 100%;
+    max-height: 100%;
 }
 
 /* width */
@@ -67,7 +67,7 @@
         searchedSchools.value = await searchSchoolStore.schoolsList()
 
         const recomendedSchoolsResponse = await searchSchoolStore.recommendedSchoolsList()
-        recomendedSchoolsResponse.forEach(recommendedSchool => recomended.value.push(recommendedSchool))
+        recomendedSchoolsResponse.forEach((recommendedSchool) => recomended.value.push(recommendedSchool))
     })
 
     watch(() => searchSchoolStore.input, 

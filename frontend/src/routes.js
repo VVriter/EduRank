@@ -34,6 +34,11 @@ export default [
         path: "/school/:id",
         component: () => import('@/views/School.vue')
     },
+    {
+        name: "GPSSearch",
+        path: "/search/",
+        component: () => import('@/views/GpsSearch.vue')
+    },
 
     {
         name: "NotFound",

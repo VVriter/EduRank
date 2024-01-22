@@ -36,6 +36,7 @@
 
     .containage {
         width: 100%;
+        max-height: 110vh;
         display: flex;
         gap: 10px;
         flex-direction: row;
@@ -63,7 +64,13 @@
         gap: 10px;
     }
 
-    @media only screen and (max-width: 767px) {
+    @media only screen and (max-width: 1260px) {
+        .containage {
+            max-height: 1000vh;
+        }
+    }
+
+    @media only screen and (max-width: 1000px) {
         main {
             flex-direction: column-reverse;
             margin-bottom: 100px;

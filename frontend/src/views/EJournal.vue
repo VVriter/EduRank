@@ -70,7 +70,7 @@
         width: 50%;
     }
 
-    @media only screen and (max-width: 767px) {
+    @media only screen and (max-width: 1000px) {
         .box {
             flex-direction: column;
         }

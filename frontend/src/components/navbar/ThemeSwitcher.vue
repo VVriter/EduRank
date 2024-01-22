@@ -1,11 +1,9 @@
 <template>
-    <el-switch 
-    v-model="uiConfigStore.isDarkModeOn" 
-    inline-prompt size="large" 
-    active-color="#1d1e1f" 
-    border-color="gray"
-    :active-icon="Sunny" 
-    :inactive-icon="Moon" />
+    <el-button 
+    @click="toogle"
+    size="large"
+    circle
+    :icon="uiConfigStore.isDarkModeOn ? Sunny : Moon"/>
 </template>
 
 <script setup>
@@ -13,4 +11,8 @@
   import { Sunny, Moon } from '@element-plus/icons-vue'
 
   const uiConfigStore = useUiConfigStore()
+
+  function toogle() {
+    uiConfigStore.isDarkModeOn = !uiConfigStore.isDarkModeOn
+  }
 </script>

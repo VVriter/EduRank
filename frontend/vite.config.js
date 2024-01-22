@@ -6,10 +6,9 @@ import { fileURLToPath, URL } from 'node:url'
 export default defineConfig({
   plugins: [vue()],
   server: {
-    port: 80,
     proxy: {
       '/api': {
-        target: 'https://edurank.space/',
+        target: 'https://edurank.r.megateam.dev/',
         changeOrigin: true
       }
     }
