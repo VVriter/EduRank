@@ -1,6 +1,6 @@
 <template>
     <main style="min-height: 80vh; display: flex; justify-content: center; align-items: center;">
-        <el-card style="min-width: 400px;">
+        <el-card style="width: 370px;">
             <template #header>
                 <el-row>
                     <el-text style="font-size: 25px;">{{titleText}}</el-text>

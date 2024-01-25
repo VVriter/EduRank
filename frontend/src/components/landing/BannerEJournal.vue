@@ -38,5 +38,15 @@
     translate: -50px;
 }
 
-@media only screen and (max-width: 767px) {}
+@media only screen and (max-width: 1000px) {
+    .img {
+        translate: 100px;
+    }
+}
+
+@media only screen and (max-width: 740px) {
+    .img {
+        translate: -50px;
+    }
+}
 </style>

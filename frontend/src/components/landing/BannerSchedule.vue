@@ -45,6 +45,15 @@
         opacity: 20%;
     }
 
-    @media only screen and (max-width: 767px) {
+    @media only screen and (max-width: 1000px) {
+        .left {
+            translate: 100px;
+        }
+    }
+
+    @media only screen and (max-width: 740px) {
+        .left {
+            translate: -50px;
+        }
     }
 </style>

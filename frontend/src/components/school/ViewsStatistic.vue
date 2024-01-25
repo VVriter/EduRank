@@ -2,7 +2,7 @@
     <el-card shadow="hover" style="border-radius: 10px;">
         <template #header>
             <el-row>
-                <el-text style="font-size: 18px;">Статистика відвідувань</el-text>
+                <el-text style="font-size: 20px;">Статистика відвідувань</el-text>
                 <el-icon style="margin-left: auto;" size="30px">
                     <View/>
                 </el-icon>

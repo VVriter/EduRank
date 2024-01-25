@@ -9,7 +9,7 @@ class EdboApiFetcher():
         print("Starting loading edbo database")
         self.url = url
         schools = database.schools_collection.find({}, {'_id': 0})
-        if schools and len(list(schools)) > 5:
+        if schools:
             schools_list = list(schools)
             self.json_response = json.dumps(schools_list)
             self.json_response = json.loads(self.json_response)

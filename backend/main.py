@@ -9,7 +9,8 @@ import json
 import datetime
 from bson import ObjectId
 from tg_bot import TgBot
-from search_engine import fetch_images_by_prompt
+from search_engine import fetch_images_by_prompt, get_google_map_cords_by_prompt
+from gMapsNear import find_schools_nearby
 
 
 builder = ConfigBuilder()
@@ -220,6 +221,18 @@ def reviews_get():
             return jsonify({'status': 'success', 'reviews': []}), 200
         else:
             return jsonify({'status': 'success', 'reviews': [json.dumps(document, default=str) for document in reviews]}), 200
+
+@app.route('/api/searchNear', methods = ['GET'])
+def searchNear():
+    longitude = request.args.get('longitude')
+    latitude = request.args.get('latitude')
+    if not longitude or not latitude:
+        return jsonify({'status': 'failed', 'message': 'bad params'}), 400
+
+    schools = databaseParser.get_json_response()
+    nerby_schools = find_schools_nearby(latitude, longitude)
+    
+    return jsonify({'status': 'success', 'schools': [], 'all': nerby_schools})
 
 if __name__ == "__main__":
     print('Starting application')

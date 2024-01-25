@@ -2,7 +2,7 @@
     <el-card shadow="hover" style="border-radius: 10px;">
         <template #header>
             <el-row>
-                <el-text style="font-size: 15px;">Рейтинг</el-text>
+                <el-text style="font-size: 20px;">Рейтинг</el-text>
                 <el-icon style="margin-left: auto;" size="30px">
                     <Star />
                 </el-icon>
