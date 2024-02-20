@@ -4,9 +4,11 @@
     <router-view class="router"/>
     <Footer class="footer"/>
   </main>
+  <container/>
 </template>
 
 <script setup>
+  import { container } from "jenesius-vue-modal";
   import NavBar from '@/components/navbar/NavBar.vue';
   import Footer from '@/components/footer/Footer.vue'
   import { watch, onMounted, onUnmounted } from 'vue'

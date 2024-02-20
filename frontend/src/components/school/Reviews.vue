@@ -15,32 +15,20 @@
 				<el-button @click="$router.push('/login')" size="large" round type="danger">Спочатку потрібно ввійти</el-button>
 				<el-divider style="width: 240px; margin: 0;"/>
 				<p>aбо</p>
-				<el-button @click="leaveAnnon = true" size="large" round type="primary">Залишити анонімно</el-button>
+				<el-button @click="openAnnonReviewModal" size="large" round type="primary">Залишити анонімно</el-button>
 			</div>
 		</div>
-		<div v-else class="side" style="justify-content: start; align-items: start; padding: 10px;">
-			<el-button @click="leaveAnnon = false" type="primary" :icon="ArrowLeftBold" size="large" round>Назад</el-button>
-			<div style="gap: 10px; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;" >
-				<div style="width: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-					<el-icon size="100px"><Avatar/></el-icon>
-					<p style="margin-left: 3px; text-align: start; width: 100%;">Ім'я (опціонально)</p>
-					<el-input placeholder="Ім'я"/>
-					<p style="margin-left: 3px; margin-top: 10px; text-align: start; width: 100%;">Відгук <el-text type="danger">*</el-text></p>
-					<el-input type="textarea" :rows="3" size="large" placeholder="Відгук"/>
-					<el-button style="margin-top: 10px; width: 100%;" round size="large">Відправити</el-button>
-				</div>
-			</div>
-		</div>	
 	</div>
 </template>
 
 <script setup>
-	import {ArrowLeftBold, Avatar} from '@element-plus/icons-vue'
+	import { openModal } from 'jenesius-vue-modal'
+ 	import {ArrowLeftBold, Avatar} from '@element-plus/icons-vue'
 	import { useUserStore } from '../../stores/userStore';
 	const userStore = useUserStore()
 	import { ref, computed, onMounted } from 'vue'
+	import AnnonReviewModal from './AnnonReviewModal.vue';
 	const reviews = ref([])
-	const leaveAnnon = ref(false)
 
 	const props = defineProps({
 		school: { required: true }
@@ -55,6 +43,12 @@
 			reviews.value.push(rev)
 		});
 	})
+
+	function openAnnonReviewModal() {
+		openModal(AnnonReviewModal, {
+			school: props.school
+		})
+	}
 </script>
 
 <style scoped>
