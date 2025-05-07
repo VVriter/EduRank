@@ -1,6 +1,6 @@
 # Edu Rank - Ukrainian School Ranking System
 
-![Edu Rank Logo](https://edurank.r.megateam.dev/logo.png)
+![image](https://github.com/user-attachments/assets/e6d16466-3cc1-4c62-929c-cf9f7fa6215a)
 
 Edu Rank is a comprehensive school ranking system designed to evaluate and rank Ukrainian schools based on various criteria. This project aims to provide valuable information to parents, students, educators, and policymakers to make informed decisions about schools in Ukraine.
 
